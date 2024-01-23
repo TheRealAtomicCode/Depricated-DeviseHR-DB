@@ -1,0 +1,7 @@
+CREATE TABLE Notes (
+  id SERIAL PRIMARY KEY,
+  operatorId INTEGER REFERENCES Operators(id),
+  companyId INTEGER,
+  noteContent TEXT,
+  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

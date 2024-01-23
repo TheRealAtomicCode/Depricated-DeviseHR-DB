@@ -1,0 +1,21 @@
+CREATE TABLE Operators (
+  id SERIAL PRIMARY KEY,
+  first_name VARCHAR(20) NOT NULL,
+  last_name VARCHAR(20) NOT NULL,
+  email VARCHAR(60) NOT NULL UNIQUE,
+  password_hash VARCHAR(60),
+  profile_picture TEXT,
+  is_terminated BOOLEAN NOT NULL DEFAULT false,
+  is_verified BOOLEAN NOT NULL DEFAULT false,
+  user_type INT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  refresh_tokens TEXT[] DEFAULT ARRAY[]::TEXT[],
+  added_by INT NOT NULL,
+  updated_by_oprtator INT,
+  verfication_code VARCHAR(10),
+  login_attempt SMALLINT DEFAULT 0,
+  last_login_time TIMESTAMP,
+  last_active_time TIMESTAMP,
+  CONSTRAINT check_user_type CHECK (user_type IN (1, 2, 3, 4, 5))
+);

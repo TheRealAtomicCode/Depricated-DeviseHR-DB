@@ -1,0 +1,971 @@
+{
+	"info": {
+		"_postman_id": "5b6f274b-9aad-40a4-b760-d0391d165053",
+		"name": "DeviseHR_Op",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28902038"
+	},
+	"item": [
+		{
+			"name": "logging",
+			"item": [
+				{
+					"name": "Login Operator",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code === 200){\r",
+									"    pm.environment.set('Token', pm.response.json().token);\r",
+									"    pm.environment.set('refresh-token', pm.response.json().refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"sudo@devisehr.com\",\r\n    \"password\": \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/operator-logging/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"operator-logging",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code === 200){\r",
+									"    pm.environment.set('Token', pm.response.json().token);\r",
+									"    pm.environment.set('refresh-token', pm.response.json().refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{refresh-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\": \"{{refresh-token}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/operator-logging/refresh",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"operator-logging",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\": \"{{refresh-token}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/operator-logging/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"operator-logging",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout all devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/operator-logging/logout-all",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"operator-logging",
+								"logout-all"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{Token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "operators",
+			"item": [
+				{
+					"name": "Me",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/operators/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"operators",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Operator Registration step 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"operatorId\": 5,\r\n    \"code\": \"560337743\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/registration/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"registration",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{Token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin-Operators",
+			"item": [
+				{
+					"name": "Create Operator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"    ohn \",\r\n    \"lastName\": \" Doe  \",\r\n    \"email\": \" sdsbbgscxzxacxchddcxdsnd.doe@devisehr.com   \",\r\n    \"role\": \"admin\",\r\n    \"sendRegistration\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/admin-operators/create-operator",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin-operators",
+								"create-operator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "send registration code to operator",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"    ohn \",\r\n    \"lastName\": \" Doe  \",\r\n    \"email\": \" sdssahdddsnd.doe@devisehr.com   \",\r\n    \"role\": \"admin\",\r\n    \"sendRegistration\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/admin-operators/send-registration/5",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin-operators",
+								"send-registration",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit user details",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"opId\": 2,\r\n    \"firstName\": \"loooooaa\",\r\n    \"lastName\": \"sssssssaaaaasss\",\r\n    \"email\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/admin-operators/edit-operator",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin-operators",
+								"edit-operator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit user role",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"opId\": 2,\r\n    \"role\": \"manager\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/admin-operators/edit-role",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin-operators",
+								"edit-role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "send reset password",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"opId\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/admin-operators/reset-operator-pswd",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin-operators",
+								"reset-operator-pswd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all operators",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"opId\": 2,\r\n    \"role\": \"manager\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/admin-operators/operators",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin-operators",
+								"operators"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get operator by Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"opId\": 2,\r\n    \"role\": \"manager\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/admin-operators/operators/11",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin-operators",
+								"operators",
+								"11"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{Token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin Company",
+			"item": [
+				{
+					"name": "Create Company",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"companyName\": \"DediseHR\",\r\n  \"firstName\": \"Qader\",\r\n  \"lastName\": \"Kamal\",\r\n  \"email\": \"qadadfdsser.kasmal@devisehr.com\",\r\n  \"expirationDate\": \"2023-12-31\",\r\n  \"phoneNumber\": \"218924347698\",\r\n  \"maxEmployeesAllowed\": 100,\r\n  \"licenceNumber\": \"dtv000\",\r\n  \"accountNumber\": \"DyV001\",\r\n  \"sendRegistration\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/admin-company/create-company",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin-company",
+								"create-company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send registration to employee in company",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"companyName\": \"DeviseHR\",\r\n  \"firstName\": \"Qader\",\r\n  \"lastName\": \"Kamal\",\r\n  \"email\": \"qader.kamal@devisehr.com\",\r\n  \"expirationDate\": \"2023-12-31T23:59:59Z\",\r\n  \"phoneNumber\": \"218924347698\",\r\n  \"maxEmployeesAllowed\": 100,\r\n  \"licenceNumber\": \"32133233\",\r\n  \"accountNumber\": \"DHR001\",\r\n  \"sendRegistration\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/admin-company/send-user-registration/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin-company",
+								"send-user-registration",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{Token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "find companies and users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/company/find-company-and-users?searchTerm=der mal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"company",
+								"find-company-and-users"
+							],
+							"query": [
+								{
+									"key": "searchTerm",
+									"value": "der mal"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get company by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/company/get-company/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"company",
+								"get-company",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/company/get-user/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"company",
+								"get-user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{Token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Manager Company",
+			"item": [
+				{
+					"name": "Edit User email",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 10,\r\n    \"email\": \"aaaaaahjkhsjd@hjh.dsds\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/manage-company/edit-email",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"manage-company",
+								"edit-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add user to company",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"sass\",\r\n    \"lastName\": \"string\",\r\n    \"email\": \"sdsdsa@sa.dsd\",\r\n    \"userRole\": \"admin\",\r\n    \"companyId\": 3,\r\n    \"sendRegistration\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/manage-company/add-user-to-company",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"manage-company",
+								"add-user-to-company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit company main contact",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyId\": 3,\r\n    \"userId\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/manage-company/update-main-contact",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"manage-company",
+								"update-main-contact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle termination",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/manage-company/toggle-termination",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"manage-company",
+								"toggle-termination"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Company Expiration",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyId\": 2,\r\n    \"expirationDate\": \"2024-12-31T23:59:59Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/manage-company/edit-expiration",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"manage-company",
+								"edit-expiration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit max amount of users in company",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyId\": 1,\r\n    \"maxUsersAmount\": 63\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/manage-company/edit-max-users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"manage-company",
+								"edit-max-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot password for employee",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/manage-company/reset-user-pswd",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"manage-company",
+								"reset-user-pswd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send registration to user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyId\": 1,\r\n    \"maxUsersAmount\": 63\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/manage-company/register-user/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"manage-company",
+								"register-user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{Token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}

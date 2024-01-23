@@ -1,0 +1,17 @@
+{
+	"name": "devisehr-db",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"seed": "node SeedDB.js",
+		"migrateSql": "node MigrateSql.js",
+		"resetdb": "npm run migrateSql && npm run seed"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"bcrypt": "^5.1.1",
+		"pg": "^8.11.3"
+	}
+}

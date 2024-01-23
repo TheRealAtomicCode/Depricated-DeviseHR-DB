@@ -1,0 +1,709 @@
+{
+	"info": {
+		"_postman_id": "b39601cc-c468-40f3-918e-8702be07bffe",
+		"name": "DeviseHR_Usr",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28902038"
+	},
+	"item": [
+		{
+			"name": "logging",
+			"item": [
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code === 200){\r",
+									"    pm.environment.set('usr-Token', pm.response.json().token);\r",
+									"    pm.environment.set('usr-refresh-token', pm.response.json().refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user1@devisehr.com\",\r\n    \"password\": \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/user-logging/login",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"user-logging",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code === 200){\r",
+									"    pm.environment.set('usr-Token', pm.response.json().token);\r",
+									"    pm.environment.set('usr-refresh-token', pm.response.json().refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\": \"{{usr-refresh-token}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/user-logging/refresh",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"user-logging",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\": \"{{usr-refresh-token}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/user-logging/logout",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"user-logging",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout all devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{usr-url}}/api/user-logging/logout-all",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"user-logging",
+								"logout-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"qader.kamal@devisehr.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/user-logging/reset-my-pswd",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"user-logging",
+								"reset-my-pswd"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{usr-Token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Me",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{usr-url}}/api/profile/me",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"cxzcxcxdsdsadsccc.doe@devisehr.com\",\r\n    \"userRole\": \"employee\",\r\n    \"dateOfBirth\": \"1990-01-01T00:00:00Z\",\r\n    \"roleId\": 1,\r\n    \"annualLeaveYearStartDate\": null,\r\n    \"sendRegistration\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/user-manager/add-user",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"user-manager",
+								"add-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/user/send-registration/16",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"send-registration",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/user/get-users",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"get-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add multiple users (Not implimented)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"john.doe@devisehr.com\",\r\n    \"userRole\": \"manager\",\r\n    \"roleId\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/user/add-user",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"add-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit user details (Not implimented)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"john.doe@devisehr.com\",\r\n    \"userRole\": \"manager\",\r\n    \"roleId\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/user/add-user",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"add-user"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{usr-Token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Create Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"role f2\",\r\n  \"enableAddEmployees\": true,\r\n  \"enableTerminateEmpoyees\": false,\r\n  \"enableDeleteEmployees\": true,\r\n  \"enableCreatePattern\": true,\r\n  \"enableApproveAbsence\": true,\r\n  \"enableAddManditotyLeave\": true,\r\n  \"enableAddLateness\": true,\r\n  \"enableCreateRotas\": true,\r\n  \"enableViewEmployeeNotificaitons\": true,\r\n  \"enableViewEmployeePayroll\": true,\r\n  \"enableViewEmployeeSensitiveInformation\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/role/create-role",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"role",
+								"create-role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get roles",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/role/get-roles",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"role",
+								"get-roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get users with roles",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/role/get-users-with-roles",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"role",
+								"get-users-with-roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit users roles",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usersWithRoles\": [\r\n        {\r\n            \"userId\": 2,\r\n            \"userRole\": \"manager\",\r\n            \"roleId\": 1\r\n        }\r\n    ]\r\n   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/role/edit-users-roles",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"role",
+								"edit-users-roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit user subordinates",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"managersToBeAdded\": [2],\r\n    \"subordinatesToBeAdded\": [1],\r\n    \"managersToBeRemoved\": [],\r\n    \"subordinatesToBeRemoved\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/role/edit-subordinate",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"role",
+								"edit-subordinate"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{usr-Token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Contracts",
+			"item": [
+				{
+					"name": "Create Contract",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user_id\": 2,\r\n  \"pattern_id\": null,\r\n  \"contract_type\": \"variable\",\r\n  \"start_date\": \"2023-07-01T12:00:00.000Z\",\r\n  \"end_date\": null,\r\n  \"contracted_working_hours_per_week_in_minutes\": 2400,\r\n  \"full_time_working_hours_per_week_in_minutes\": 3000,\r\n  \"contracted_working_days_per_week\": 5,\r\n  \"average_working_day\": 8,\r\n  \"is_leave_in_days\": true,\r\n  \"companies_full_time_annual_leave_entitlement\": 25,\r\n  \"contracted_annual_leave_entitlement\": 20,\r\n  \"this_years_annual_leave_allowence\": 15,\r\n  \"term_time_id\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/contract/create-new-contract",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"contract",
+								"create-new-contract"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Absence",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user_id\": 1,\r\n  \"start_date\": \"2025-01-22\",\r\n  \"end_date\": \"2024-02-08\",\r\n  \"is_first_half_day\": null,\r\n  \"start_time\": \"09:00\",\r\n  \"end_time\": \"13:00\",\r\n  \"absence_type\": 1,\r\n  \"comments\": \"Optional comments here\",\r\n  \"isApproved\": false,\r\n  \"deducted\": 12\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/absence/create-new-absence",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"absence",
+								"create-new-absence"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "End contract",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"endDate\": \"2025-02-01T12:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{usr-url}}/api/contract/end-contract-date/2",
+							"host": [
+								"{{usr-url}}"
+							],
+							"path": [
+								"api",
+								"contract",
+								"end-contract-date",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{usr-Token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}

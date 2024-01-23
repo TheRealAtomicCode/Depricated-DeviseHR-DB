@@ -1,0 +1,21 @@
+CREATE TABLE Roles (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(60) NOT NULL,
+  enable_add_employees BOOLEAN NOT NULL DEFAULT false,
+  enable_terminate_employees BOOLEAN NOT NULL DEFAULT false,
+  enable_delete_employee BOOLEAN NOT NULL DEFAULT false,
+  enable_create_pattern BOOLEAN NOT NULL DEFAULT false,
+  enable_approve_absence BOOLEAN NOT NULL DEFAULT false,
+  enable_add_manditory_leave BOOLEAN NOT NULL DEFAULT false,
+  enable_add_lateness BOOLEAN NOT NULL DEFAULT false,
+  enable_create_rotas BOOLEAN NOT NULL DEFAULT false,
+  enable_view_employee_notifications BOOLEAN NOT NULL DEFAULT false,
+  enable_view_employee_payroll BOOLEAN NOT NULL DEFAULT false,
+  enable_view_employee_sensitive_information BOOLEAN NOT NULL DEFAULT false,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  added_by INT,
+  updated_by INT,
+  company_id INTEGER,
+  FOREIGN KEY (company_id) REFERENCES Companies (id)
+);
