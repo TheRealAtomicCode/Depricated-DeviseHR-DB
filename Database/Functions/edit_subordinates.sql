@@ -6,7 +6,7 @@ CREATE OR REPLACE FUNCTION edit_subordinates(
   IN company_id_param INT,
   IN exclude_user_id INT
 )
-RETURNS SETOF users
+RETURNS void
 LANGUAGE plpgsql
 AS $$
 DECLARE
@@ -34,11 +34,11 @@ BEGIN
 
         -- Check manager role
         IF NOT EXISTS (
-            SELECT user_role
+            SELECT user_type
             FROM users
             WHERE id = managers_to_be_removed[i]
                 AND company_id = company_id_param
-                AND user_role = 'manager'
+                AND user_type = 2
         )
         THEN
             RAISE EXCEPTION 'Manager not found.';
@@ -46,17 +46,17 @@ BEGIN
 
         -- Check subordinate role
         IF NOT EXISTS (
-            SELECT user_role
+            SELECT user_type
             FROM users
             WHERE id = subordinates_to_be_removed[i]
                 AND company_id = company_id_param
-                AND user_role != 'manager'
+                AND user_type != 2
         )
         THEN
             RAISE EXCEPTION 'Subordinate not found.';
         END IF;
 
-        IF (SELECT user_role FROM users WHERE id = subordinates_to_be_removed[i] AND company_id = company_id_param) = 'manager' OR NULL THEN
+        IF (SELECT user_type FROM users WHERE id = subordinates_to_be_removed[i] AND company_id = company_id_param) = 2 OR NULL THEN
           RAISE EXCEPTION 'The user with ID % cannot be a manager.', subordinates_to_be_removed[i];
         END IF;
 
@@ -79,11 +79,11 @@ BEGIN
 
        -- Check manager role
         IF NOT EXISTS (
-            SELECT user_role
+            SELECT user_type
             FROM users
             WHERE id = managers_to_be_added[i]
                 AND company_id = company_id_param
-                AND user_role = 'manager'
+                AND user_type = 2
         )
         THEN
            RAISE EXCEPTION 'Manager not found.';
@@ -91,11 +91,11 @@ BEGIN
 
         -- Check subordinate role
         IF NOT EXISTS (
-            SELECT user_role
+            SELECT user_type
             FROM users
             WHERE id = subordinates_to_be_added[i]
                 AND company_id = company_id_param
-                AND user_role != 'manager'
+                AND user_type != 2
         )
         THEN
             RAISE EXCEPTION 'Subordinate not found.';
@@ -107,7 +107,5 @@ BEGIN
       END LOOP;
     END IF;
 
-  -- Return the affected rows
-  RETURN QUERY SELECT * FROM users WHERE id = ANY(user_ids) AND company_id = company_id_param;
 
 END $$;

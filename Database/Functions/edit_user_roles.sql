@@ -1,3 +1,15 @@
+
+
+
+
+--
+--
+-- NOT USED IN THE ASP CODE
+--
+--
+--
+
+
 CREATE OR REPLACE FUNCTION edit_user_roles(
   IN user_ids INT[],
   IN user_roles TEXT[],
