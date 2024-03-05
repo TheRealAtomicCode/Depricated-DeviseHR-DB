@@ -2,7 +2,8 @@ CREATE FUNCTION update_last_contract_end_date(
   IN userId INT,
   IN myId INT,
   IN companyId INT,
-  IN endDateStr VARCHAR
+  IN endDateStr VARCHAR,
+  IN userType INT
 )
 RETURNS contract_record AS $$
 DECLARE
@@ -23,9 +24,16 @@ BEGIN
       RAISE EXCEPTION 'Start date of the last contract is after the provided end date';
     ELSE
       -- Update the end date of the last contract with the provided end date
-      UPDATE contracts
-      SET end_date = endDateStr::date, updated_by = myId
-      WHERE user_id = userId AND company_id = companyId AND id = last_contract.id AND user_id != myId;
+      IF userType = 1 THEN -- if admin allow to end own contract
+        UPDATE contracts
+        SET end_date = endDateStr::date, updated_by = myId
+        WHERE user_id = userId AND company_id = companyId AND id = last_contract.id; -- STOPPED CODE FROM NOT WORKING ON SELF for Admins
+      ELSE
+        UPDATE contracts
+        SET end_date = endDateStr::date, updated_by = myId
+        WHERE user_id = userId AND company_id = companyId AND id = last_contract.id AND user_id != myId;
+      END IF;
+    
     END IF;
   END IF;
 
