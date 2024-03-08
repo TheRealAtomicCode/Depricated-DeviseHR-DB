@@ -51,27 +51,21 @@ BEGIN
             RETURN NEW;
         END IF;
     ELSE
-		RAISE NOTICE 'made it here';
 		-- get leave start date from user
 		SELECT contracted_leave_start_date, company_id INTO saved_contracted_start_date, saved_company_id FROM users WHERE id = NEW.user_id;
 		
-		RAISE NOTICE '%', saved_company_id;
-		RAISE NOTICE '%', saved_contracted_start_date;
-		
 		IF saved_contracted_start_date IS NULL THEN
-			RAISE NOTICE 'made it here 2';
 			-- get leave start date from company if the user does not have a leave year start date
     		SELECT annual_leave_start_date INTO saved_contracted_start_date FROM companies WHERE id = saved_company_id;
-			
-			RAISE NOTICE '%', saved_contracted_start_date;
-  		END IF;
-		
-		RAISE NOTICE 'made it here 3';
+  		END IF;	
+
+		-- Set the year of the contracted start date to the current year
+		saved_contracted_start_date = date_trunc('year', NEW.start_date)::date + (saved_contracted_start_date - date_trunc('year', saved_contracted_start_date)::date);
+
         -- if no previous contract, then new contract will be added by insert
 		INSERT INTO leave_year (user_id, company_id, leave_year_start_date, total_leave_entitlement, total_leave_allowance, added_by)
 		VALUES (NEW.user_id, NEW.company_id, saved_contracted_start_date, NEW.contracted_leave_entitlement, NEW.this_contracts_leave_allowence, NEW.user_id);
 		
-		RAISE NOTICE 'made it here 4';
         RETURN NEW;
 		
     END IF;
