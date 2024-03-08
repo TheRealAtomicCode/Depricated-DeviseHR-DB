@@ -18,6 +18,7 @@ const sqlFilePaths = [
   './Database/Models/Discarded_Contracts.sql',
   './Database/Models/Absences.sql',
   './Database/Models/Terms.sql',
+  './Database/Models/Leave_Years.sql',
   // ! functions
   './Database/Functions/edit_user_roles.sql',
   './Database/Functions/edit_subordinates.sql',

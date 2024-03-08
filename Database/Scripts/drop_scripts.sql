@@ -12,6 +12,7 @@ DROP FUNCTION IF EXISTS edit_subordinates;
 DROP FUNCTION IF EXISTS edit_user_roles;
 
 -- drop tables
+DROP TABLE IF EXISTS leave_year;
 DROP TABLE IF EXISTS Terms CASCADE;
 DROP TABLE IF EXISTS Absences CASCADE;
 DROP TABLE IF EXISTS Working_Patterns CASCADE;

@@ -16,6 +16,7 @@ CREATE TABLE Contracts (
   contracted_hours_per_week_in_minutes INTEGER NOT NULL DEFAULT 480, --contracted_working_hours_per_week_in_minutes
   company_hours_per_week_in_minutes INTEGER NOT NULL, -- full_time_working_hours_per_week_in_minutes
   contracted_days_per_week_in_halfs INTEGER DEFAULT 0 NOT NULL, --contracted_working_days_per_week
+  company_days_per_week_in_halfs INTEGER DEFAULT 0 NOT NULL,
   average_working_day INTEGER NOT NULL DEFAULT 480,
   is_leave_in_days BOOLEAN NOT NULL DEFAULT true,
   company_leave_entitlement  INTEGER NOT NULL DEFAULT 0, -- companies_full_time_annual_leave_entitlement
@@ -27,7 +28,8 @@ CREATE TABLE Contracts (
   discarded_xnumber INTEGER,
 
   -- check start day does noy == end day has been removed
-  CONSTRAINT check_days_per_week_dont_exceed_7 CHECK (contracted_days_per_week_in_halfs >= 0 AND contracted_days_per_week_in_halfs <= 7), -- when calculating annual leave in hours
+  CONSTRAINT check_contracted_days_per_week_dont_exceed_7 CHECK (contracted_days_per_week_in_halfs >= 0 AND contracted_days_per_week_in_halfs <= 7), -- when calculating annual leave in hours
+  CONSTRAINT check_company_days_per_week_dont_exceed_7 CHECK (company_days_per_week_in_halfs >= 0 AND company_days_per_week_in_halfs <= 7), -- when calculating annual leave in hours
   CONSTRAINT contracted_hours_per_week_in_minutes CHECK ((contracted_hours_per_week_in_minutes > 0 AND contracted_hours_per_week_in_minutes <= 10080) OR NULL),
   CONSTRAINT full_time_working_hours_per_week_limit CHECK (company_hours_per_week_in_minutes >= 0 AND company_hours_per_week_in_minutes <= 10080),
   CONSTRAINT contract_type_check CHECK (
