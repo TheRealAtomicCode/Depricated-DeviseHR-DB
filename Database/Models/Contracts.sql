@@ -28,8 +28,8 @@ CREATE TABLE Contracts (
   discarded_xnumber INTEGER,
 
   -- check start day does noy == end day has been removed
-  CONSTRAINT check_contracted_days_per_week_dont_exceed_7 CHECK (contracted_days_per_week_in_halfs >= 0 AND contracted_days_per_week_in_halfs <= 7), -- when calculating annual leave in hours
-  CONSTRAINT check_company_days_per_week_dont_exceed_7 CHECK (company_days_per_week_in_halfs >= 0 AND company_days_per_week_in_halfs <= 7), -- when calculating annual leave in hours
+  CONSTRAINT check_contracted_days_per_week_dont_exceed_14 CHECK (contracted_days_per_week_in_halfs >= 0 AND contracted_days_per_week_in_halfs <= 14), -- when calculating annual leave in hours
+  CONSTRAINT check_company_days_per_week_dont_exceed_14 CHECK (company_days_per_week_in_halfs >= 0 AND company_days_per_week_in_halfs <= 14), -- when calculating annual leave in hours
   CONSTRAINT contracted_hours_per_week_in_minutes CHECK ((contracted_hours_per_week_in_minutes > 0 AND contracted_hours_per_week_in_minutes <= 10080) OR NULL),
   CONSTRAINT full_time_working_hours_per_week_limit CHECK (company_hours_per_week_in_minutes >= 0 AND company_hours_per_week_in_minutes <= 10080),
   CONSTRAINT contract_type_check CHECK (
