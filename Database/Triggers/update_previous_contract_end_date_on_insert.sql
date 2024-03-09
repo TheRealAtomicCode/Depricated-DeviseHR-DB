@@ -10,6 +10,8 @@ DECLARE
     new_end_date DATE;
  	saved_contracted_start_date TIMESTAMP;
 	saved_company_id INT;
+    number_of_days_from_contract_start INT;
+    -- full_leave_year_entitlement INT;
 BEGIN
     SELECT *
     INTO last_contract
@@ -62,9 +64,15 @@ BEGIN
 		-- Set the year of the contracted start date to the current year
 		saved_contracted_start_date = date_trunc('year', NEW.start_date)::date + (saved_contracted_start_date - date_trunc('year', saved_contracted_start_date)::date);
 
+        -- getting days between to calculate the full_leave_year_entitlement
+        -- SELECT date_part('day', age(NEW.start_date, saved_contracted_start_date + INTERVAL '1 year'))
+        -- INTO number_of_days_from_contract_start;
+
+        -- full_leave_year_entitlement = 
+
         -- if no previous contract, then new contract will be added by insert
-		INSERT INTO leave_year (user_id, company_id, leave_year_start_date, total_leave_entitlement, total_leave_allowance, added_by)
-		VALUES (NEW.user_id, NEW.company_id, saved_contracted_start_date, NEW.contracted_leave_entitlement, NEW.this_contracts_leave_allowence, NEW.user_id);
+		INSERT INTO leave_year (user_id, company_id, leave_year_start_date, total_leave_entitlement, total_leave_allowance, full_leave_year_entitlement, added_by)
+		VALUES (NEW.user_id, NEW.company_id, saved_contracted_start_date, NEW.contracted_leave_entitlement, NEW.this_contracts_leave_allowence, NEW.contracted_leave_entitlement, NEW.user_id);
 		
         RETURN NEW;
 		
