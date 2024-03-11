@@ -3,7 +3,7 @@ CREATE TABLE Companies (
   name VARCHAR(60) NOT NULL,
   licence_number VARCHAR(255) NOT NULL,
   account_number VARCHAR(6) NOT NULL UNIQUE,
-  annual_leave_start_date DATE DEFAULT '1970-01-01',
+  annual_leave_start_date DATE NOT NULL DEFAULT '1970-01-01',
   logo TEXT,
   enable_semi_personal_information BOOLEAN NOT NULL DEFAULT false,
   enable_show_employees BOOLEAN NOT NULL DEFAULT false,

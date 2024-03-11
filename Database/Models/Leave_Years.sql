@@ -6,7 +6,7 @@ CREATE TABLE leave_year (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   added_by INT NOT NULL,
   updated_by INT,
-  leave_year_start_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  leave_year_start_date DATE NOT NULL,
   total_leave_entitlement INTEGER NOT NULL DEFAULT 0,
   full_leave_year_entitlement  INTEGER NOT NULL DEFAULT 0,
   total_leave_allowance INTEGER NOT NULL DEFAULT 0,
