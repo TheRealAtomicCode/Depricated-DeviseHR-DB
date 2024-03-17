@@ -10,6 +10,7 @@ CREATE TABLE leave_year (
   total_leave_entitlement INTEGER NOT NULL DEFAULT 0,
   full_leave_year_entitlement  INTEGER NOT NULL DEFAULT 0,
   total_leave_allowance INTEGER NOT NULL DEFAULT 0,
+  is_days BOOLEAN NOT NULL,
   leave_year_year INTEGER GENERATED ALWAYS AS (EXTRACT(YEAR FROM leave_year_start_date)) STORED,
   CONSTRAINT unique_leave_year_per_year_per_user UNIQUE (leave_year_year, user_id)
 );

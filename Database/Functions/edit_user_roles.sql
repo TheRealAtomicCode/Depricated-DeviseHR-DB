@@ -26,6 +26,7 @@ DECLARE
   affected_row users%rowtype;
 BEGIN
   -- Start the transaction
+  
 
   -- Check if the number of user IDs and user roles is equal
   IF array_length(user_ids, 1) <> array_length(user_roles, 1) THEN
