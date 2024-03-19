@@ -1,3 +1,36 @@
+CREATE OR REPLACE FUNCTION is_related(p_manager_id INT, p_subordinate_id INT) RETURNS BOOLEAN AS $$
+DECLARE
+  v_hierarchy_exists BOOLEAN;
+BEGIN
+  SELECT EXISTS (
+    SELECT 1
+    FROM hierarchies
+    WHERE manager_id = p_manager_id AND subordinate_id = p_subordinate_id
+    LIMIT 1
+  ) INTO v_hierarchy_exists;
+
+  RETURN v_hierarchy_exists;
+END $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION has_manager(p_subordinate_id INT) RETURNS BOOLEAN AS $$
+DECLARE
+  v_has_manager BOOLEAN;
+BEGIN
+  SELECT EXISTS (
+    SELECT 1
+    FROM hierarchies
+    WHERE subordinate_id = p_subordinate_id
+    LIMIT 1
+  ) INTO v_has_manager;
+
+  RETURN v_has_manager;
+END $$ LANGUAGE plpgsql;
+
+
+
+
+
 CREATE OR REPLACE FUNCTION insert_absence(
 	p_start_date DATE,
 	p_end_date DATE,
@@ -14,6 +47,9 @@ CREATE OR REPLACE FUNCTION insert_absence(
 DECLARE
   v_leave_year_start_date DATE;
   v_contracts contracts[];
+  v_has_manager BOOLEAN;
+  v_is_subordinate BOOLEAN;
+  v_approved INT;
 BEGIN
 	
   -- permissions check section
@@ -22,24 +58,46 @@ BEGIN
   IF p_my_id = p_user_id THEN
   	
 	IF p_user_type = 1 THEN 
-		-- check if has manager
-		-- add or request
+		v_has_manager := has_manager(p_my_id);
+		
+		IF v_has_manager THEN
+		   -- request absence
+		   v_approved = NULL;
+		ELSE
+	     -- add absence
+		 v_approved = my_id;
+		END IF;
+		
 	ELSE
-		-- error
+		-- request
+		v_approved = NULL;
 	END IF;
 		
   ELSE
   
   	IF p_user_type = 1 THEN 
 		-- add
+		v_approved = my_id
 	ELSE IF p_user_type = 2 THEN
 		-- check is related
-		-- add or error
+		v_is_subordinate := is_related(p_my_id, p_user_id);
+		
+		IF v_is_subordinate THEN
+		  -- add for other user
+		  v_approved = my_id;
+		ELSE
+		  -- error
+		  RAISE EXCEPTION 'Error: Can not add absence for user who is not your subordinate';
+		  
+		END IF;
 	ELSE
 		-- error
+		RAISE EXCEPTION 'Error: Employees can not add absences for other users';
 	END IF;
   
   END IF;
+  
+  
 	
 
   -- check leave year section 
@@ -111,16 +169,4 @@ BEGIN
 
 
 END $$ LANGUAGE plpgsql;
-
-
-
-
-
-
-
-
-
-
-
-
 
