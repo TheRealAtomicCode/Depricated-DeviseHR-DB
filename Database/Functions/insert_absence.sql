@@ -8,15 +8,43 @@ CREATE OR REPLACE FUNCTION insert_absence(
 	p_comment TEXT,
 	p_company_id INT,
 	p_user_id INT,
-	p_my_id INT
+	p_my_id INT,
+	p_user_type INT
 ) RETURNS VOID AS $$
 DECLARE
   v_leave_year_start_date DATE;
   v_contracts contracts[];
 BEGIN
 	
+  -- permissions check section
+  --
+  --
+  IF p_my_id = p_user_id THEN
+  	
+	IF p_user_type = 1 THEN 
+		-- check if has manager
+		-- add or request
+	ELSE
+		-- error
+	END IF;
+		
+  ELSE
+  
+  	IF p_user_type = 1 THEN 
+		-- add
+	ELSE IF p_user_type = 2 THEN
+		-- check is related
+		-- add or error
+	ELSE
+		-- error
+	END IF;
+  
+  END IF;
 	
 
+  -- check leave year section 
+  --
+  --
   SELECT leave_year_start_date INTO v_leave_year_start_date
   FROM leave_year
   WHERE leave_year_start_date <= p_start_date
@@ -37,8 +65,9 @@ BEGIN
 
 
 
-
-
+  -- contracts section
+  --
+  --
   -- Retrieve contracts based on specified dates and store them in the array
   WITH subquery AS (
     SELECT *
@@ -54,11 +83,8 @@ BEGIN
   INTO v_contracts
   FROM subquery AS sq;
   
-  -- hey chat gpt, can you please add an if statement to check if the v_contracts has a value in the [1] index and if so, add another if statement inside of it checking if the start_date of v_contracts[0] is exactly 1 day after the end_date of v_contracts[0]
+  -- check contracts 
   IF array_length(v_contracts, 1) > 1 THEN
-  	RAISE NOTICE 'array has 2 values';
-	RAISE NOTICE '%', v_contracts[2].end_date;
-	RAISE NOTICE '%', v_contracts[1].start_date + INTERVAL '-1 day';
     IF v_contracts[2].end_date <> v_contracts[1].start_date + INTERVAL '-1 day' THEN
       RAISE EXCEPTION 'Error: can not add absence between 2 contracts that have a gap between.';
     END IF;
@@ -68,7 +94,12 @@ BEGIN
 	END IF;
   END IF;
 	
-  -- Raise the contracts
+	
+	
+	
+  -- Raise the contracts section
+  --
+  --
   RAISE NOTICE 'Contracts:';
   RAISE NOTICE '-------------------------------------';
   FOR i IN 1..array_length(v_contracts, 1) LOOP
@@ -80,3 +111,16 @@ BEGIN
 
 
 END $$ LANGUAGE plpgsql;
+
+
+
+
+
+
+
+
+
+
+
+
+
