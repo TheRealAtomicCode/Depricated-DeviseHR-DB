@@ -37,6 +37,7 @@ CREATE OR REPLACE FUNCTION insert_absence(
 	p_start_time TIME,
 	p_end_time TIME,
 	p_is_half_day BOOLEAN,
+	p_leave_in_days BOOLEAN,
 	p_absence_type INT,
 	p_comment TEXT,
 	p_company_id INT,
@@ -50,7 +51,24 @@ DECLARE
   v_has_manager BOOLEAN;
   v_is_subordinate BOOLEAN;
   v_approved INT;
+  v_is_days BOOLEAN;
 BEGIN
+
+  ---- REMOVABLE IF STATEMENTS
+  --
+  --
+  IF p_absence_type <> 1 THEN
+    RAISE EXCEPTION 'Error: absence type not supported yet.';
+  END IF;
+
+  -- basic checks before selecting
+  --
+  --
+  IF p_is_half_day THEN
+    IF p_start_date <> p_end_date THEN
+      RAISE EXCEPTION 'Error: cannot add half-day absence spanning multiple days.';
+    END IF;
+  END IF;
 	
   -- permissions check section
   --
@@ -77,22 +95,23 @@ BEGIN
   
   	IF p_user_type = 1 THEN 
 		-- add
-		v_approved = my_id
-	ELSE IF p_user_type = 2 THEN
-		-- check is related
-		v_is_subordinate := is_related(p_my_id, p_user_id);
-		
-		IF v_is_subordinate THEN
-		  -- add for other user
-		  v_approved = my_id;
-		ELSE
-		  -- error
-		  RAISE EXCEPTION 'Error: Can not add absence for user who is not your subordinate';
-		  
-		END IF;
+		v_approved := p_my_id;
 	ELSE
-		-- error
-		RAISE EXCEPTION 'Error: Employees can not add absences for other users';
+		IF p_user_type = 2 THEN
+			-- check if related
+			v_is_subordinate := is_related(p_my_id, p_user_id);
+
+			IF v_is_subordinate THEN
+				-- add for other user
+				v_approved := p_my_id;
+			ELSE
+				-- error
+				RAISE EXCEPTION 'Error: Cannot add absence for a user who is not your subordinate';
+			END IF;
+		ELSE
+			-- error
+			RAISE EXCEPTION 'Error: Employees cannot add absences for other users';
+		END IF;
 	END IF;
   
   END IF;
@@ -103,7 +122,7 @@ BEGIN
   -- check leave year section 
   --
   --
-  SELECT leave_year_start_date INTO v_leave_year_start_date
+  SELECT leave_year_start_date, is_days INTO v_leave_year_start_date, v_is_days
   FROM leave_year
   WHERE leave_year_start_date <= p_start_date
   ORDER BY leave_year_start_date DESC
@@ -111,6 +130,12 @@ BEGIN
   
   IF v_leave_year_start_date IS NULL THEN
     RAISE EXCEPTION 'Error: No leave year was found.';
+  END IF;
+  IF (p_leave_in_days AND v_is_days) <> (NOT p_leave_in_days AND NOT v_is_days) THEN
+    RAISE EXCEPTION 'Error: Leave unit must be the same as leave year unit (add days if leave year is in days, and add hours if leave year is calculated in hours).';
+  END IF;
+  IF v_is_days AND p_start_time <> NULL OR v_is_days AND p_end_time <> NULL THEN
+  	RAISE EXCEPTION 'Error: Can not add absence in hours while leave year is calculated in days.';
   END IF;
 
   -- check if absence dates are located within leave year range
@@ -169,4 +194,48 @@ BEGIN
 
 
 END $$ LANGUAGE plpgsql;
+
+
+
+
+SELECT insert_absence(
+  p_start_date := '2024-03-20',
+  p_end_date := '2024-03-22',
+  p_start_time := '09:00:00',
+  p_end_time := '17:00:00',
+  p_is_half_day := false,
+  p_leave_in_days := true,
+  p_absence_type := 1,
+  p_comment := 'Vacation',
+  p_company_id := 1,
+  p_user_id := 5,
+  p_my_id := 1,
+  p_user_type := 3
+);
+
+
+
+
+
+-- SELECT check_leave_year_start_date('2022-09-01', '2022-12-03');
+
+
+--   SELECT *
+-- 	FROM contracts AS c1
+-- 	WHERE start_date <= '2023-09-01'
+-- 	  AND (end_date >= '2023-09-01' OR end_date IS NULL)
+-- 	UNION
+-- 	  SELECT *
+-- 	  FROM contracts AS c2
+-- 	  WHERE
+-- 		c2.start_date <= '2023-11-03' AND ( end_date >= '2023-11-03' OR end_date IS NULL )
+-- 	ORDER BY id;
+
+
+
+
+
+
+
+
 
